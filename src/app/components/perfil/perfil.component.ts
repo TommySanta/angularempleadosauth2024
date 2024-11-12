@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
-  styleUrl: './perfil.component.css'
+  styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
   public empleado!: Empleado;
@@ -16,14 +16,17 @@ export class PerfilComponent implements OnInit {
     private _router: Router
   ){}
 
-  ngOnInit(): void {
-    if (this._service.token == ""){
+  async ngOnInit(): Promise<void> {
+    if (!this._service.token) {
       this._router.navigate(["/login"]);
-    }else{
-      this._service.getPerfilEmpleado().subscribe(response => {
-        console.log(response);
-        this.empleado = response;
-      })  
+      return;
+    }
+    
+    try {
+      const response = await this._service.getPerfilEmpleado();
+      this.empleado = response;
+    } catch (error) {
+      console.error("Error fetching profile", error);
     }
   }
 }

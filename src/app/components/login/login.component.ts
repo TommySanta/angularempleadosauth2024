@@ -6,13 +6,14 @@ import { Login } from '../../models/login';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
   @ViewChild("cajausuario") cajaUsuario!: ElementRef;
   @ViewChild("cajapassword") cajaPassword!: ElementRef;
 
   public respuesta!: string;
+
   constructor(
     private _service: ServiceEmpleados,
     private _router: Router
@@ -22,14 +23,11 @@ export class LoginComponent implements OnInit {
     let userName = this.cajaUsuario.nativeElement.value;
     let password = this.cajaPassword.nativeElement.value;
     let user = new Login(userName, password);
-    this._service.loginEmpleado(user).subscribe(response => {
+    this._service.loginEmpleado(user).then(response => {
       console.log("listo");
       this._service.token = response.response;
-      this.respuesta = response.response;
     })
   }
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 }
