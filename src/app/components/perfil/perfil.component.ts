@@ -19,10 +19,11 @@ export class PerfilComponent implements OnInit {
   ngOnInit(): void {
     if (this._service.token == ""){
       this._router.navigate(["/login"]);
+    }else{
+      this._service.getPerfilEmpleado().subscribe(response => {
+        console.log(response);
+        this.empleado = response;
+      })  
     }
-    this._service.getPerfilEmpleado().subscribe(response => {
-      console.log(response);
-      this.empleado = response;
-    })  
   }
 }
